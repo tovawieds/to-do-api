@@ -101,15 +101,15 @@ def todos_update_by_id(id, title, description, completed):
     conn.commit()
     return dict(row)
 
-# # destroy action - delete a todo
-# def todos_destroy(id):
-#     conn = connect_to_db()
-#     conn.execute(
-#         """
-#         DELETE FROM todos
-#         WHERE id = ?
-#         """,
-#         (id,),
-#     )
-#     conn.commit()
-#     return {"message": "Todo deleted successfully"}
+# destroy action - delete a todo
+def todos_destroy_by_id(id):
+    conn = connect_to_db()
+    conn.execute(
+        """
+        DELETE FROM todos
+        WHERE id = ?
+        """,
+        (id,),
+    )
+    conn.commit()
+    return {"message": "Todo deleted successfully"}

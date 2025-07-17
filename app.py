@@ -35,7 +35,7 @@ def update(id):
     completed = request.args.get("completed") or todo["completed"]
     return db.todos_update_by_id(id, title, description, completed)
 
-# # destroy route
-# @app.route("/todos/<int:id>.json", methods=["DELETE"])
-# def destroy(id):
-#     return db.todos_destroy(id)
+# destroy route
+@app.route("/todos/<id>.json", methods=["DELETE"])
+def destroy(id):
+    return db.todos_destroy_by_id(id)
