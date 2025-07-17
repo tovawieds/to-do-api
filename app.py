@@ -21,10 +21,10 @@ def create():
     completed = 0
     return db.todo_create(title, description, completed)
 
-# # show route
-# @app.route("/todos/<int:id>.json")
-# def show(id):
-#     return db.todos_show(id)
+# show route
+@app.route("/todos/<id>.json")
+def show(id):
+    return db.todos_find_by_id(id)
 
 # # update route
 # @app.route("/todos/<int:id>.json", methods=["PUT"])

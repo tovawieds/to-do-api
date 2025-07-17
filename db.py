@@ -74,3 +74,15 @@ def todo_create(title, description, completed):
     ).fetchone()
     conn.commit()
     return dict(row)
+
+# show action - find a todo by id
+def todos_find_by_id(id):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        SELECT * FROM todos
+        WHERE id = ?
+        """,
+        (id,),
+    ).fetchone()
+    return dict(row)
