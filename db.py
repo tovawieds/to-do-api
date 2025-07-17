@@ -86,3 +86,30 @@ def todos_find_by_id(id):
         (id,),
     ).fetchone()
     return dict(row)
+
+# update action - update a todo
+def todos_update_by_id(id, title, description, completed):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        UPDATE todos SET title = ?, description = ?, completed = ?
+        WHERE id = ?
+        RETURNING *
+        """,
+        (title, description, completed, id),
+    ).fetchone()
+    conn.commit()
+    return dict(row)
+
+# # destroy action - delete a todo
+# def todos_destroy(id):
+#     conn = connect_to_db()
+#     conn.execute(
+#         """
+#         DELETE FROM todos
+#         WHERE id = ?
+#         """,
+#         (id,),
+#     )
+#     conn.commit()
+#     return {"message": "Todo deleted successfully"}

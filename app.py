@@ -18,7 +18,7 @@ def index():
 def create():
     title = request.args.get("title")
     description = request.args.get("description")
-    completed = 0
+    completed = request.args.get("description") or 0
     return db.todo_create(title, description, completed)
 
 # show route
@@ -26,11 +26,14 @@ def create():
 def show(id):
     return db.todos_find_by_id(id)
 
-# # update route
-# @app.route("/todos/<int:id>.json", methods=["PUT"])
-# def update(id):
-#     todo = request.get_json()
-#     return db.todos_update(id, todo)
+# update route
+@app.route("/todos/<id>.json", methods=["PATCH"])
+def update(id):
+    todo = db.todos_find_by_id(id)
+    title = request.args.get("title") or todo["title"]
+    description = request.args.get("description") or todo["description"]
+    completed = request.args.get("completed") or todo["completed"]
+    return db.todos_update_by_id(id, title, description, completed)
 
 # # destroy route
 # @app.route("/todos/<int:id>.json", methods=["DELETE"])
