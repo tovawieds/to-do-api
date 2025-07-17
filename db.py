@@ -49,7 +49,9 @@ if __name__ == "__main__":
     initial_setup()
 
 
-# web layer
+# WEB LAYER
+
+# index action - to get all todos
 def todos_all():
     conn = connect_to_db()
     rows = conn.execute(
@@ -58,3 +60,17 @@ def todos_all():
         """
     ).fetchall()
     return [dict(row) for row in rows]
+
+# create action - to create a new todo
+def todo_create(title, description, completed):
+    conn = connect_to_db()
+    row = conn.execute(
+        """
+        INSERT INTO todos (title, description, completed)
+        VALUES (?, ?, ?)
+        RETURNING *
+        """,
+        (title, description, completed),
+    ).fetchone()
+    conn.commit()
+    return dict(row)
