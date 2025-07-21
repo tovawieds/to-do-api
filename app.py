@@ -18,9 +18,13 @@ def index():
 # create route
 @app.route("/todos.json", methods=["POST"])
 def create():
-    title = request.args.get("title")
-    description = request.args.get("description")
-    completed = request.args.get("description") or 0
+    if request.is_json:
+        data = request.get_json()
+    else:
+        data = request.form
+    title = data.get("title")
+    description = data.get("description")
+    completed = data.get("description") or 0
     return db.todo_create(title, description, completed)
 
 # show route
@@ -31,10 +35,18 @@ def show(id):
 # update route
 @app.route("/todos/<id>.json", methods=["PATCH"])
 def update(id):
+    if request.is_json:
+        data = request.json
+    else:
+        data = request.form
     todo = db.todos_find_by_id(id)
-    title = request.args.get("title") or todo["title"]
-    description = request.args.get("description") or todo["description"]
-    completed = request.args.get("completed") or todo["completed"]
+    title = data.get("title") or todo["title"]
+    description = data.get("description") or todo["description"]
+    if "completed" in data:
+        completed = data["completed"]
+    else:
+        completed = todo["completed"]
+    # completed = data.get("completed") or todo["completed"]
     return db.todos_update_by_id(id, title, description, completed)
 
 # destroy route
